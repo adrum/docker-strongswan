@@ -1,18 +1,25 @@
-FROM buildpack-deps:jessie
+FROM debian:stretch
 
 RUN mkdir -p /conf
 
-RUN apt-get update && apt-get install -y \
-  libgmp-dev \
-  iptables \
-  xl2tpd \
-  module-init-tools \
-  supervisor
-
-ENV STRONGSWAN_VERSION 5.5.0
+ENV STRONGSWAN_VERSION 5.5.3
 ENV GPG_KEY 948F158A4E76A27BF3D07532DF42C170B34DBA77
 
-RUN mkdir -p /usr/src/strongswan \
+RUN set -x \
+  && apt-get update -qq \
+  && apt-get install -y -qq -o Apt::Install-Recommends=0 \
+    build-essential \
+    ca-certificates \
+    curl \
+    dirmngr \
+    gnupg \
+    iptables \
+    kmod \
+    libgmp-dev \
+    libssl-dev \
+    supervisor \
+    xl2tpd \
+  && mkdir -p /usr/src/strongswan \
 	&& cd /usr/src \
 	&& curl -SOL "https://download.strongswan.org/strongswan-$STRONGSWAN_VERSION.tar.gz.sig" \
 	&& curl -SOL "https://download.strongswan.org/strongswan-$STRONGSWAN_VERSION.tar.gz" \
@@ -36,7 +43,14 @@ RUN mkdir -p /usr/src/strongswan \
 		--enable-openssl \
 	&& make -j \
 	&& make install \
-	&& rm -rf "/usr/src/strongswan*"
+	&& rm -rf "/usr/src/strongswan*" \
+  && apt-get remove --purge -y \
+    build-essential \
+    curl \
+    dirmngr \
+    gnupg \
+  && apt-get autoremove --purge -y \
+  && rm -rf /var/lib/apt/lists/*
 
 # Strongswan Configuration
 ADD ipsec.conf /etc/ipsec.conf
