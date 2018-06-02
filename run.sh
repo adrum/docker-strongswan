@@ -84,6 +84,16 @@ if [ -n "$VPN_DNS" ]; then
 	sed -i "s/dns = 8.8.8.8, 8.8.4.4/dns = $VPN_DNS/g" /etc/strongswan.conf
 fi
 
+# SETUP IP RANGE must = use format 192.168.1.x
+if [[ "$VPN_IP_RANGE" =~ ".x" ]]; then
+	local_ip=$(sed 's|.x|.1|g' <<< $VPN_IP_RANGE)
+	start_ip=$(sed 's|.x|.2|g' <<< $VPN_IP_RANGE)
+	finish_ip=$(sed 's|.x|.254|g' <<< $VPN_IP_RANGE)
+
+    sed -i "s/ip range = 10.1.0.2-10.1.0.254/ip range = $start_ip-$finish_ip/g" /etc/xl2tpd/xl2tpd.conf
+    sed -i "s/local ip = 10.1.0.1/local ip = $local_ip/g" /etc/xl2tpd/xl2tpd.conf
+fi
+
 mkdir -p /var/run/xl2tpd
 
 exec /usr/bin/supervisord -c /supervisord.conf
