@@ -15,8 +15,11 @@ RUN set -x \
     libgmp-dev \
     libssl-dev \
 	strongswan \
-    supervisor \
-    xl2tpd
+    supervisor
+
+# https://discourse.osmc.tv/t/strong-swan-vpn-issues-with-xl2tpd-and-debian-stretch/72030
+RUN curl -SOL http://ftp.debian.org/debian/pool/main/x/xl2tpd/xl2tpd_1.3.1+dfsg-1_armhf.deb && \
+	sudo apt-get install ./xl2tpd_1.3.1+dfsg-1_armhf.deb
 
 RUN apt-get autoremove --purge -y \
   && rm -rf /var/lib/apt/lists/*
