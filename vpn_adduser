@@ -10,6 +10,10 @@ fi
 
 vpn_deluser ${vpn_user}
 
+cat >> /etc/ipsec.d/chap-secrets <<EOF
+${vpn_user} * "${vpn_password}" *
+EOF
+
 cat >> /etc/ipsec.d/l2tp-secrets <<EOF
 "${vpn_user}" "*" "${vpn_password}" "*"
 EOF

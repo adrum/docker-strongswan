@@ -9,6 +9,8 @@ fi
 
 touch /etc/ipsec.d/ipsec.secrets
 touch /etc/ipsec.d/l2tp-secrets
+touch /etc/ipsec.d/chap-secrets
 
 sed -i "/${vpn_user} :/d" /etc/ipsec.d/ipsec.secrets
+sed -i "/${vpn_user} :/d" /etc/ipsec.d/chap-secrets
 sed -i "/\"${vpn_user}\" \"*\"/d" /etc/ipsec.d/l2tp-secrets
