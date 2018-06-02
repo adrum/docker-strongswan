@@ -1,0 +1,19 @@
+version: '2'
+services:
+  vpn:
+    image: adrum/docker-strongswan-pi
+    restart: always
+    privileged: true
+    network_mode: bridge
+    volumes:
+      - /lib/modules:/lib/modules:ro
+    ports:
+      - "500:500/udp"
+      - "4500:4500/udp"
+      - "1701:1701/udp"
+    environment:
+      - VPN_USER=user
+      - VPN_PASSWORD=testpass
+      - VPN_PSK=testsecret
+      - VPN_DNS=192.168.1.1
+      - VPN_IP_RANGE=192.168.2.x
