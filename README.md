@@ -1,13 +1,19 @@
 # Strongswan on Docker
 
-Base docker image to run a Strongswan IPsec and a XL2TPD server.
+Base docker image to run a Strongswan IPsec and a XL2TPD server on a Raspberry Pi running Raspian Stretch.
 
 ## Usage
 
 Run the following to start the container:
 
 ```
-docker run -d -p 500:500/udp -p 4500:4500/udp -p 1701:1701/udp --privileged philplckthun/strongswan
+docker run -d -p 500:500/udp -p 4500:4500/udp -p 1701:1701/udp --privileged adrum/docker-strongswan-pi
+```
+
+Or use docker-compose using the `docker-compose.yml` file, then run:
+
+```
+docker-compose up -d
 ```
 
 If you haven't set any login credentials via configuration files or environment variables, then a new random password will be set. To get it, read the logs of the running container:
@@ -66,5 +72,5 @@ The default IPSec configuration supports:
 
 The ports that are exposed for this container to work are:
 
-* 4500/udp and 500/udp for IPSec 
+* 4500/udp and 500/udp for IPSec
 * 1701/udp for L2TP
