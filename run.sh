@@ -3,6 +3,10 @@
 sysctl -w net.ipv4.conf.all.rp_filter=2
 
 iptables --table nat --append POSTROUTING --jump MASQUERADE
+iptables -I INPUT -p UDP --dport 4500 -j ACCEPT
+iptables -I INPUT -p UDP --dport 500 -j ACCEPT
+iptables -I INPUT -p UDP --dport 1701 -j ACCEPT
+
 echo 1 > /proc/sys/net/ipv4/ip_forward
 for each in /proc/sys/net/ipv4/conf/*
 do
