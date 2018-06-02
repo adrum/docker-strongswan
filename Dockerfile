@@ -2,9 +2,6 @@ FROM resin/rpi-raspbian:stretch
 
 RUN mkdir -p /conf
 
-ENV STRONGSWAN_VERSION 5.5.3
-ENV GPG_KEY 948F158A4E76A27BF3D07532DF42C170B34DBA77
-
 RUN set -x \
   && apt-get update -qq \
   && apt-get install -y -qq -o Apt::Install-Recommends=0 \
