@@ -8,48 +8,17 @@ ENV GPG_KEY 948F158A4E76A27BF3D07532DF42C170B34DBA77
 RUN set -x \
   && apt-get update -qq \
   && apt-get install -y -qq -o Apt::Install-Recommends=0 \
-    build-essential \
     ca-certificates \
-    curl \
-    dirmngr \
-    gnupg \
     iptables \
     kmod \
+	libcharon-extra-plugins \
     libgmp-dev \
     libssl-dev \
+	strongswan \
     supervisor \
-    xl2tpd \
-  && mkdir -p /usr/src/strongswan \
-	&& cd /usr/src \
-	&& curl -SOL "https://download.strongswan.org/strongswan-$STRONGSWAN_VERSION.tar.gz.sig" \
-	&& curl -SOL "https://download.strongswan.org/strongswan-$STRONGSWAN_VERSION.tar.gz" \
-	&& export GNUPGHOME="$(mktemp -d)" \
-	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEY" \
-	&& gpg --batch --verify strongswan-$STRONGSWAN_VERSION.tar.gz.sig strongswan-$STRONGSWAN_VERSION.tar.gz \
-	&& tar -zxf strongswan-$STRONGSWAN_VERSION.tar.gz -C /usr/src/strongswan --strip-components 1 \
-	&& cd /usr/src/strongswan \
-	&& ./configure --prefix=/usr --sysconfdir=/etc \
-		--enable-eap-radius \
-		--enable-eap-mschapv2 \
-		--enable-eap-identity \
-		--enable-eap-md5 \
-		--enable-eap-mschapv2 \
-		--enable-eap-tls \
-		--enable-eap-ttls \
-		--enable-eap-peap \
-		--enable-eap-tnc \
-		--enable-eap-dynamic \
-		--enable-xauth-eap \
-		--enable-openssl \
-	&& make -j \
-	&& make install \
-	&& rm -rf "/usr/src/strongswan*" \
-  && apt-get remove --purge -y \
-    build-essential \
-    curl \
-    dirmngr \
-    gnupg \
-  && apt-get autoremove --purge -y \
+    xl2tpd
+
+RUN apt-get autoremove --purge -y \
   && rm -rf /var/lib/apt/lists/*
 
 # Strongswan Configuration
