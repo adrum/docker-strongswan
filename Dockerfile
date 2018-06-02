@@ -46,8 +46,8 @@ COPY vpn_apply /usr/local/bin/vpn_apply
 ENV VPN_USER user
 ENV VPN_PASSWORD password
 ENV VPN_PSK password
-ENV VPN_DNS
-ENV VPN_IP_RANGE
+#ENV VPN_DNS
+#ENV VPN_IP_RANGE
 # for VPN_IP_RANGE, use the following format 192.168.1.x
 
 VOLUME ["/etc/ipsec.d"]
