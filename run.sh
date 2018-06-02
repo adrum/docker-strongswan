@@ -77,6 +77,13 @@ if [ -f "/etc/ipsec.d/xl2tpd.conf" ]; then
 	cp -f /etc/ipsec.d/xl2tpd.conf /etc/xl2tpd/xl2tpd.conf
 fi
 
+# SETUP DNS
+if [ -n "$VPN_DNS" ]; then
+	sed -i "s/ms-dns 8.8.8.8/ms-dns $VPN_DNS/g" /etc/ppp/options.xl2tpd
+	sed -i "/ms-dns 8.8.4.4/d" /etc/ppp/options.xl2tpd
+	sed -i "s/dns = 8.8.8.8, 8.8.4.4/dns = $VPN_DNS/g" /etc/strongswan.conf
+fi
+
 mkdir -p /var/run/xl2tpd
 
 exec /usr/bin/supervisord -c /supervisord.conf

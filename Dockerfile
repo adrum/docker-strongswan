@@ -75,6 +75,7 @@ ADD vpn_apply /usr/local/bin/vpn_apply
 ENV VPN_USER user
 ENV VPN_PASSWORD password
 ENV VPN_PSK password
+ENV VPN_DNS
 
 VOLUME ["/etc/ipsec.d"]
 
